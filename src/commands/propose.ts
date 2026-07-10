@@ -401,7 +401,7 @@ export async function proposeCore(deps: ProposeCoreDeps): Promise<number> {
   changes.push({ path: statePath, content: serializeState(newState) });
 
   const commitResult = await gitHost.commitAndPush({
-    branch: env.CI_MERGE_REQUEST_SOURCE_BRANCH ?? '',
+    branch: env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME ?? 'main',
     message: 'docwelder: update generated documentation',
     changes,
   });

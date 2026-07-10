@@ -138,7 +138,7 @@ describe('proposeCore', () => {
       env: {
         CI_MERGE_REQUEST_DIFF_BASE_SHA: 'base',
         CI_MERGE_REQUEST_IID: '42',
-        CI_MERGE_REQUEST_SOURCE_BRANCH: 'feature',
+        CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: 'feature',
       },
       ...overrides,
     };
