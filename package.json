@@ -1,6 +1,6 @@
 {
   "name": "docwelder",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Semi-automated, user-confirmed documentation sync between your codebase, README, CHANGELOG, and wiki.",
   "type": "module",
   "license": "MIT",
