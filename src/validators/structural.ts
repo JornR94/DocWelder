@@ -135,6 +135,7 @@ export function validateReadme(
   content: string,
   rules: StructuralRules,
   repoRoot: string,
+  knownWikiPaths: string[] = [],
 ): string[] {
   const errors = validateHeadingsAndCodeBlocks(content, rules);
 
@@ -154,7 +155,17 @@ export function validateReadme(
     }
   }
 
+  // Normalise wiki paths for comparison: decode URI encoding and strip leading slash.
+  const normalisedWikiPaths = new Set(
+    knownWikiPaths.map((p) => decodeURIComponent(p).replace(/^\//, '')),
+  );
+
   for (const path of extractReferencedPaths(content)) {
+    // Skip paths that refer to a known wiki page — those are not local filesystem paths.
+    const normalisedPath = decodeURIComponent(path).replace(/^\//, '');
+    if (normalisedWikiPaths.has(normalisedPath)) {
+      continue;
+    }
     const resolved = join(repoRoot, path);
     if (!existsSync(resolved)) {
       errors.push(`README references a path that does not exist: "${path}"`);

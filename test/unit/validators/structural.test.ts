@@ -78,6 +78,22 @@ wiki_backend:
     expect(errors.some((e) => e.includes('GUIDE.md'))).toBe(false);
   });
 
+  it('does not flag a README link that matches a known wiki path', () => {
+    const readme = `# A\n\n## Installation\n\nSee the [wiki](/Demo%20Backend%20%E2%80%94%20Wiki).\n\n## Usage\n\ntext\n`;
+    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, [
+      '/Demo Backend — Wiki',
+    ]);
+    expect(errors.some((e) => e.includes('Demo'))).toBe(false);
+  });
+
+  it('flags a README link that looks like a wiki path but is not in the known list', () => {
+    const readme = `# A\n\n## Installation\n\nSee the [wiki](/Some%20Unknown%20Page).\n\n## Usage\n\ntext\n`;
+    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, [
+      '/Demo Backend — Wiki',
+    ]);
+    expect(errors.some((e) => e.includes('Some%20Unknown%20Page'))).toBe(true);
+  });
+
   it('flags a documented CLI flag absent from the codebase', () => {
     const readme = `# A\n\n## Installation\n\nRun with \`--totally-made-up-flag\`.\n\n## Usage\n\ntext\n`;
     const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot);

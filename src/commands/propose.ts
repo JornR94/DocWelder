@@ -274,7 +274,7 @@ export async function proposeCore(deps: ProposeCoreDeps): Promise<number> {
 
     const errors: string[] = [];
     if (candidate.readme && readmeEligible) {
-      errors.push(...validateReadme(candidate.readme.content, config.structural_rules, cwd));
+      errors.push(...validateReadme(candidate.readme.content, config.structural_rules, cwd, uniqueWikiPaths));
     }
     if (candidate.changelog && changelogEligible) {
       errors.push(...validateChangelogEntry(candidate.changelog, config.structural_rules));
