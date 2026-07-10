@@ -86,12 +86,16 @@ wiki_backend:
     expect(errors.some((e) => e.includes('Demo'))).toBe(false);
   });
 
-  it('flags a README link that looks like a wiki path but is not in the known list', () => {
-    const readme = `# A\n\n## Installation\n\nSee the [wiki](/Some%20Unknown%20Page).\n\n## Usage\n\ntext\n`;
-    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, [
-      '/Demo Backend — Wiki',
-    ]);
-    expect(errors.some((e) => e.includes('Some%20Unknown%20Page'))).toBe(true);
+  it('does not flag an absolute path link (treated as wiki/external reference)', () => {
+    const readme = `# A\n\n## Installation\n\nSee the [wiki](/wiki).\n\n## Usage\n\ntext\n`;
+    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, []);
+    expect(errors.some((e) => e.includes('/wiki'))).toBe(false);
+  });
+
+  it('flags a relative README link to a file that does not exist on disk', () => {
+    const readme = `# A\n\n## Installation\n\nSee [docs](./missing-file.md).\n\n## Usage\n\ntext\n`;
+    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, []);
+    expect(errors.some((e) => e.includes('missing-file.md'))).toBe(true);
   });
 
   it('flags a documented CLI flag absent from the codebase', () => {

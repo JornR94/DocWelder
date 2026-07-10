@@ -166,6 +166,11 @@ export function validateReadme(
     if (normalisedWikiPaths.has(normalisedPath)) {
       continue;
     }
+    // Skip absolute paths — local README links should always be relative (e.g. ./docs/setup.md).
+    // Absolute paths like /wiki or /Some%20Page are wiki/external references, not filesystem paths.
+    if (path.startsWith('/')) {
+      continue;
+    }
     const resolved = join(repoRoot, path);
     if (!existsSync(resolved)) {
       errors.push(`README references a path that does not exist: "${path}"`);
