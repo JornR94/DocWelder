@@ -45,6 +45,8 @@ export interface InitOptions {
 
 const CI_INCLUDE_URL = `https://raw.githubusercontent.com/JornR94/DocWelder/v${DOCWELDER_VERSION}/release/ci-template.yml`;
 
+const DEFAULT_MODEL = 'deepseek/deepseek-v4-flash';
+
 function isGitRepo(cwd: string): boolean {
   try {
     const out = execFileSync('git', ['rev-parse', '--is-inside-work-tree'], {
@@ -163,6 +165,12 @@ export async function runInit(options: InitOptions): Promise<number> {
     };
   }
 
+  const modelRaw = await prompter.input({
+    message: 'OpenRouter model (leave blank to use default):',
+    default: DEFAULT_MODEL,
+  });
+  const model = modelRaw.trim() || DEFAULT_MODEL;
+
   const config = DocStyleConfigSchema.parse({
     structural_rules: {
       code_block_language_whitelist: primaryLanguages,
@@ -173,6 +181,7 @@ export async function runInit(options: InitOptions): Promise<number> {
       project: userConfig.wikiBackend.project,
       wiki_identifier: userConfig.wikiBackend.wikiIdentifier,
     },
+    llm: { model },
   });
 
   // README detection / verification / generation (task 9.4, 9.5).

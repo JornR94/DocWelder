@@ -7,7 +7,7 @@ import {
   type TokenUsage,
 } from './interface.js';
 
-export const DEFAULT_OPENROUTER_MODEL = 'anthropic/claude-3.5-sonnet';
+export const DEFAULT_OPENROUTER_MODEL = 'deepseek/deepseek-v4-flash';
 
 const DEFAULT_TIMEOUT_MS = 60_000;
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';

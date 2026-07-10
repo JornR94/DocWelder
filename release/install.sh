@@ -25,7 +25,7 @@ fi
 # with the version being published; defaults to this repo's own VERSION file
 # so a local/dev run of this script pins whatever is currently checked out.
 # ---------------------------------------------------------------------------
-DOCWELDER_PIN_VERSION="${DOCWELDER_PIN_VERSION:-$(cat "$(dirname "$0")/../VERSION" 2>/dev/null || echo "0.1.0")}"
+DOCWELDER_PIN_VERSION="${DOCWELDER_PIN_VERSION:-$(cat "$(dirname "$0")/../VERSION" 2>/dev/null || echo "0.1.1")}"
 DOCWELDER_IMAGE="ghcr.io/jornr94/docwelder"
 
 log() { printf '%s\n' "$*"; }

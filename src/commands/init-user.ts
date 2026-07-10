@@ -65,6 +65,8 @@ async function collectWikiBackend(prompter: Prompter): Promise<UserConfig['wikiB
   return { type: 'azure-devops-wiki', organization, project, wikiIdentifier, personalAccessToken };
 }
 
+const DEFAULT_MODEL = 'deepseek/deepseek-v4-flash';
+
 async function collectLlmProvider(prompter: Prompter): Promise<UserConfig['llmProvider']> {
   await prompter.select({
     message: 'Select your LLM provider (OpenRouter is the only option in MVP):',
@@ -74,7 +76,12 @@ async function collectLlmProvider(prompter: Prompter): Promise<UserConfig['llmPr
     () => prompter.password({ message: 'OpenRouter API key:' }),
     'API key',
   );
-  return { type: 'openrouter', apiKey, model: null };
+  const modelRaw = await prompter.input({
+    message: 'OpenRouter model (leave blank to use default):',
+    default: DEFAULT_MODEL,
+  });
+  const model = modelRaw.trim() || DEFAULT_MODEL;
+  return { type: 'openrouter', apiKey, model };
 }
 
 function warnIfWorldReadable(logger: Logger, filePath: string): void {
