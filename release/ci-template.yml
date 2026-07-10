@@ -1,0 +1,31 @@
+# Docwelder CI include template.
+#
+# This checked-in copy is the SOURCE template for version 0.1.0 — it is not
+# itself auto-generated. The project's release pipeline (task 18) is
+# responsible for stamping the `image:`/`DOCWELDER_TEMPLATE_VERSION`
+# values with the released version and publishing this exact file at:
+#   https://raw.githubusercontent.com/JornR94/DocWelder/v0.1.0/release/ci-template.yml
+#
+# Deliberately declares no `cache:` key on either job (design D11 — Docwelder
+# treats every CI job as stateless; all cross-run state lives in git or the
+# wiki backend, never on runner-side storage).
+
+docwelder-propose:
+  image: ghcr.io/jornr94/docwelder:0.1.0
+  variables:
+    GIT_DEPTH: '0'
+    DOCWELDER_TEMPLATE_VERSION: '0.1.0'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - docwelder propose
+
+docwelder-publish:
+  image: ghcr.io/jornr94/docwelder:0.1.0
+  variables:
+    DOCWELDER_TEMPLATE_VERSION: '0.1.0'
+  resource_group: docwelder-publish
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - docwelder publish

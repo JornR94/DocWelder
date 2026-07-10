@@ -1,0 +1,10 @@
+# Example `.docs/mapping.yaml` — explicit code path -> wiki page mapping.
+# `docwelder init` proposes a first draft via wiki scan + AI suggestion;
+# this file is authored by humans thereafter and never mutated by
+# `docwelder propose` or `docwelder publish` (design D10: explicit mapping only).
+
+mappings:
+  - code_path: 'src/api/**'
+    wiki_path: '/API/Overview'
+  - code_path: 'src/cli/**'
+    wiki_path: '/CLI/Reference'

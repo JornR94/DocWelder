@@ -1,0 +1,48 @@
+# Example `.docs/config.yaml` matching docwelder init's opinionated defaults.
+# Every field here is safe to hand-edit after `docwelder init`; no pipeline
+# job ever writes to this file (spec `doc-style-config`: "All fields user-editable").
+
+structural_rules:
+  # README sections docwelder's structural validator requires on every proposal.
+  required_readme_sections:
+    - Installation
+    - Usage
+  # Soft cap enforced per section; the validator fails proposals that exceed it.
+  max_word_count_per_section: 400
+  # Maximum heading depth (##### is depth 5, disallowed at the default of 4).
+  heading_depth_limit: 4
+  # Empty = no restriction. `docwelder init` fills this in from detected
+  # repository languages; add more (or remove the restriction) any time.
+  code_block_language_whitelist: []
+  # The only supported value for MVP.
+  changelog_format: keep-a-changelog
+
+style_guidance:
+  # Fixed opinionated defaults — not asked about even in advanced `init` mode.
+  tone: mixed-audience
+  code_example_policy: mixed-audience
+  diagram_policy: mermaid-for-architecture-changes
+  # Asked about in advanced `init` mode; shown here at their default-mode values.
+  audience: mixed
+  conciseness: balanced
+  readme_wiki_policy: link-to-wiki
+  update_triggers:
+    - public-api
+    - config-env
+  exclusions: []
+
+# Non-secret wiki connection routing. The Personal Access Token itself is
+# never stored here — it comes from the ADO_WIKI_PAT CI variable.
+wiki_backend:
+  type: azure-devops-wiki
+  organization: your-ado-organization
+  project: your-ado-project
+  wiki_identifier: your-wiki-identifier
+
+llm:
+  # null = use the container image's default OpenRouter model.
+  model: null
+  # Structural-validation retry cap before docwelder propose fails non-blockingly.
+  retry_limit: 3
+  # Per-MR token budget guard; propose fails non-blockingly once exhausted.
+  token_budget: 200000
