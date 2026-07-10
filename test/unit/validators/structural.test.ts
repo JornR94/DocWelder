@@ -92,6 +92,12 @@ wiki_backend:
     expect(errors.some((e) => e.includes('/wiki'))).toBe(false);
   });
 
+  it('does not flag a bare relative path with no extension (treated as wiki slug)', () => {
+    const readme = `# A\n\n## Installation\n\nSee the [wiki](wiki).\n\n## Usage\n\ntext\n`;
+    const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, []);
+    expect(errors.some((e) => e.includes('"wiki"'))).toBe(false);
+  });
+
   it('flags a relative README link to a file that does not exist on disk', () => {
     const readme = `# A\n\n## Installation\n\nSee [docs](./missing-file.md).\n\n## Usage\n\ntext\n`;
     const errors = validateReadme(readme, CONFIG.structural_rules, repoRoot, []);

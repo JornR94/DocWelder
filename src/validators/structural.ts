@@ -171,6 +171,12 @@ export function validateReadme(
     if (path.startsWith('/')) {
       continue;
     }
+    // Skip paths with no file extension — bare words like "wiki" or "docs" are wiki slugs or
+    // directory references hallucinated by the LLM, not local files.
+    const basename = normalisedPath.split('/').pop() ?? '';
+    if (!basename.includes('.')) {
+      continue;
+    }
     const resolved = join(repoRoot, path);
     if (!existsSync(resolved)) {
       errors.push(`README references a path that does not exist: "${path}"`);
