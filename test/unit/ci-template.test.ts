@@ -47,8 +47,6 @@ describe('release/ci-template.yml', () => {
     expect(imageName(template['docwelder-propose']!.image)).toBe(
       imageName(template['docwelder-publish']!.image),
     );
-    expect(imageName(template['docwelder-propose']!.image)).toMatch(
-      /^ghcr\.io\/.+:\d+\.\d+\.\d+$/,
-    );
+    expect(imageName(template['docwelder-propose']!.image)).toMatch(/^ghcr\.io\/.+:\d+\.\d+\.\d+$/);
   });
 });
