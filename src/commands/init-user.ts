@@ -80,7 +80,7 @@ async function collectLlmProvider(prompter: Prompter): Promise<UserConfig['llmPr
     message: 'OpenRouter model (leave blank to use default):',
     default: DEFAULT_MODEL,
   });
-  const model = modelRaw.trim() || DEFAULT_MODEL;
+  const model = modelRaw?.trim() || null;
   return { type: 'openrouter', apiKey, model };
 }
 

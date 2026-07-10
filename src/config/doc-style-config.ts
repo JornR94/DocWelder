@@ -70,7 +70,7 @@ export const WikiBackendConfigSchema = z
  */
 export const LlmConfigSchema = z
   .object({
-    model: z.string().min(1).nullable().default('deepseek/deepseek-v4-flash'),
+    model: z.string().min(1).nullable().default(null),
     retry_limit: z.number().int().min(0).default(3),
     token_budget: z.number().int().positive().default(200_000),
   })

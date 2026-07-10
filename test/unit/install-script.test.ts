@@ -1,5 +1,5 @@
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -21,20 +21,34 @@ describe('release/install.sh', () => {
   });
 
   it('exits non-zero naming docker and podman when neither is on PATH', () => {
-    // A minimal PATH covering only the core utilities the script itself
-    // needs (uname, cat, mkdir, dirname, command) — deliberately excludes
-    // /usr/local/bin, /opt/homebrew/bin, etc. where docker/podman typically
-    // live, so neither resolves regardless of what's installed on the host
-    // running this test.
-    const minimalPath = '/usr/bin:/bin';
+    // Build a minimal PATH containing only the utilities the script needs
+    // (uname, mkdir, cat, dirname, printf, bash) but NOT docker or podman.
+    // Using /usr/bin directly is unreliable because on some CI runners
+    // (e.g. GitHub Actions Ubuntu) docker lives at /usr/bin/docker.
     const home = mkdtempSync(join(tmpdir(), 'docwelder-home-'));
+    const fakeBin = mkdtempSync(join(tmpdir(), 'docwelder-fakebin-'));
     try {
+      // Symlink essential tools into fakeBin, skipping docker/podman
+      const needed = ['uname', 'mkdir', 'cat', 'dirname', 'printf', 'bash'];
+      for (const tool of needed) {
+        for (const dir of ['/usr/bin', '/bin']) {
+          const src = `${dir}/${tool}`;
+          if (existsSync(src)) {
+            try {
+              symlinkSync(src, join(fakeBin, tool));
+            } catch {
+              // already linked — continue
+            }
+            break;
+          }
+        }
+      }
       let stderr = '';
       let status = 0;
       try {
         execFileSync('bash', [SCRIPT_PATH], {
           stdio: 'pipe',
-          env: { HOME: home, PATH: minimalPath },
+          env: { HOME: home, PATH: fakeBin },
         });
       } catch (err) {
         const e = err as { status?: number; stderr?: Buffer };
@@ -46,6 +60,7 @@ describe('release/install.sh', () => {
       expect(stderr).toMatch(/podman/i);
     } finally {
       rmSync(home, { recursive: true, force: true });
+      rmSync(fakeBin, { recursive: true, force: true });
     }
   });
 });

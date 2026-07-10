@@ -169,7 +169,7 @@ export async function runInit(options: InitOptions): Promise<number> {
     message: 'OpenRouter model (leave blank to use default):',
     default: DEFAULT_MODEL,
   });
-  const model = modelRaw.trim() || DEFAULT_MODEL;
+  const model = modelRaw?.trim() || DEFAULT_MODEL;
 
   const config = DocStyleConfigSchema.parse({
     structural_rules: {

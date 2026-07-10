@@ -3,12 +3,17 @@ import { parse as parseYaml } from 'yaml';
 import { describe, expect, it } from 'vitest';
 
 interface CiJob {
-  image?: string;
+  image?: string | { name: string; entrypoint?: string[] };
   variables?: Record<string, string>;
   rules?: { if?: string }[];
   resource_group?: string;
   script?: string[];
   cache?: unknown;
+}
+
+function imageName(image: CiJob['image']): string {
+  if (typeof image === 'string') return image;
+  return image?.name ?? '';
 }
 
 describe('release/ci-template.yml', () => {
@@ -39,7 +44,11 @@ describe('release/ci-template.yml', () => {
   });
 
   it('pins both jobs to the same image tag', () => {
-    expect(template['docwelder-propose']!.image).toBe(template['docwelder-publish']!.image);
-    expect(template['docwelder-propose']!.image).toMatch(/^ghcr\.io\/.+:\d+\.\d+\.\d+$/);
+    expect(imageName(template['docwelder-propose']!.image)).toBe(
+      imageName(template['docwelder-publish']!.image),
+    );
+    expect(imageName(template['docwelder-propose']!.image)).toMatch(
+      /^ghcr\.io\/.+:\d+\.\d+\.\d+$/,
+    );
   });
 });
