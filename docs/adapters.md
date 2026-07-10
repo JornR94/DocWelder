@@ -4,9 +4,9 @@ Docwelder's core is deliberately decoupled from GitLab, Azure DevOps Wiki, and O
 
 ## The three interfaces
 
-| Interface | File | MVP implementation |
-| --- | --- | --- |
-| `GitHost` | `src/adapters/git-host/interface.ts` | `src/adapters/git-host/gitlab.ts` (GitLab) |
+| Interface     | File                                     | MVP implementation                                     |
+| ------------- | ---------------------------------------- | ------------------------------------------------------ |
+| `GitHost`     | `src/adapters/git-host/interface.ts`     | `src/adapters/git-host/gitlab.ts` (GitLab)             |
 | `WikiBackend` | `src/adapters/wiki-backend/interface.ts` | `src/adapters/wiki-backend/ado.ts` (Azure DevOps Wiki) |
 | `LLMProvider` | `src/adapters/llm-provider/interface.ts` | `src/adapters/llm-provider/openrouter.ts` (OpenRouter) |
 

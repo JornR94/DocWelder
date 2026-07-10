@@ -1,6 +1,6 @@
 # End-to-end verification runbook
 
-Section 19 of `tasks.md` calls for live verification against a real GitLab project and a real Azure DevOps wiki. Neither is available in the environment this MVP was implemented in (no credentials, no disposable GitLab/ADO instance), so this document is the manual runbook a maintainer with access to both should run through before the first real release. Every step below is covered in isolation by the unit test suite (`npm test` — 142 tests across adapters, config, pipeline, and commands as of this writing); what's *not* covered without this runbook is the real integration between GitLab, Azure DevOps Wiki, and OpenRouter all at once.
+Section 19 of `tasks.md` calls for live verification against a real GitLab project and a real Azure DevOps wiki. Neither is available in the environment this MVP was implemented in (no credentials, no disposable GitLab/ADO instance), so this document is the manual runbook a maintainer with access to both should run through before the first real release. Every step below is covered in isolation by the unit test suite (`npm test` — 142 tests across adapters, config, pipeline, and commands as of this writing); what's _not_ covered without this runbook is the real integration between GitLab, Azure DevOps Wiki, and OpenRouter all at once.
 
 ## Prerequisites (19.1)
 

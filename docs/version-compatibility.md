@@ -16,11 +16,11 @@ Local commands (`init-user`, `init`, `upgrade`, `self-update`) never see `DOCWEL
 
 ## Where the versions are set
 
-| Artifact | Where the version is set |
-| --- | --- |
-| Container image tag | `release/build-image.sh` reads `VERSION` and tags `ghcr.io/jornr94/docwelder:<version>` |
-| CI template's `image:` and `DOCWELDER_TEMPLATE_VERSION` | `release/ci-template.yml`, stamped by the release pipeline from `VERSION` |
-| `.gitlab-ci.yml`'s pinned include URL (per onboarded repo) | Written by `docwelder init`, updated by `docwelder upgrade` |
-| Local wrapper's pinned tag | Written by `release/install.sh`, updated by `docwelder self-update` |
+| Artifact                                                   | Where the version is set                                                                |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Container image tag                                        | `release/build-image.sh` reads `VERSION` and tags `ghcr.io/jornr94/docwelder:<version>` |
+| CI template's `image:` and `DOCWELDER_TEMPLATE_VERSION`    | `release/ci-template.yml`, stamped by the release pipeline from `VERSION`               |
+| `.gitlab-ci.yml`'s pinned include URL (per onboarded repo) | Written by `docwelder init`, updated by `docwelder upgrade`                             |
+| Local wrapper's pinned tag                                 | Written by `release/install.sh`, updated by `docwelder self-update`                     |
 
 All four ultimately derive from the single `VERSION` file at the repo root (task 1.5's single-source-of-truth).

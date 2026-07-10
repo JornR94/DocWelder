@@ -13,7 +13,7 @@
 docwelder-propose:
   image:
     name: ghcr.io/jornr94/docwelder:0.1.1
-    entrypoint: [""]
+    entrypoint: ['']
   variables:
     GIT_DEPTH: '0'
     DOCWELDER_TEMPLATE_VERSION: '0.1.1'
@@ -25,7 +25,7 @@ docwelder-propose:
 docwelder-publish:
   image:
     name: ghcr.io/jornr94/docwelder:0.1.1
-    entrypoint: [""]
+    entrypoint: ['']
   variables:
     DOCWELDER_TEMPLATE_VERSION: '0.1.1'
   resource_group: docwelder-publish

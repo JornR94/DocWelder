@@ -76,14 +76,14 @@ Both edit the relevant file/pin locally and report the version delta; neither au
 
 ## Troubleshooting
 
-| Symptom | Likely cause |
-| --- | --- |
-| `docwelder init` refuses to run | Not inside a git repository, or `docwelder init-user` hasn't been run yet on this machine. |
-| `docwelder propose` exits immediately with a `CI_PIPELINE_SOURCE` error | The job isn't running in a merge-request pipeline — this is expected on other pipeline sources. |
-| `docwelder propose` fails citing a missing variable | One of `OPENROUTER_API_KEY` / `GITLAB_BOT_TOKEN` isn't set as a CI/CD variable on the project. |
-| `docwelder publish` opens a GitLab issue about an ETag mismatch | Someone edited the wiki page outside Docwelder between MR open and merge. Re-run `docwelder propose` on a new commit to pick up the current content — this is by design (see [design.md](openspec/changes/add-docwelder-mvp/design.md), decision D4), not a bug. |
-| The propose job fails "non-blockingly" with validator errors in an MR comment | The LLM's output didn't satisfy `.docs/config.yaml`'s structural rules after the retry cap. The MR is not blocked from merging; adjust `.docs/config.yaml` or retry by pushing a new commit. |
-| Image refuses to start, citing a version mismatch | The pinned container image tag and the CI template version have drifted apart. Run `docwelder upgrade` to realign them. |
+| Symptom                                                                       | Likely cause                                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docwelder init` refuses to run                                               | Not inside a git repository, or `docwelder init-user` hasn't been run yet on this machine.                                                                                                                                                                       |
+| `docwelder propose` exits immediately with a `CI_PIPELINE_SOURCE` error       | The job isn't running in a merge-request pipeline — this is expected on other pipeline sources.                                                                                                                                                                  |
+| `docwelder propose` fails citing a missing variable                           | One of `OPENROUTER_API_KEY` / `GITLAB_BOT_TOKEN` isn't set as a CI/CD variable on the project.                                                                                                                                                                   |
+| `docwelder publish` opens a GitLab issue about an ETag mismatch               | Someone edited the wiki page outside Docwelder between MR open and merge. Re-run `docwelder propose` on a new commit to pick up the current content — this is by design (see [design.md](openspec/changes/add-docwelder-mvp/design.md), decision D4), not a bug. |
+| The propose job fails "non-blockingly" with validator errors in an MR comment | The LLM's output didn't satisfy `.docs/config.yaml`'s structural rules after the retry cap. The MR is not blocked from merging; adjust `.docs/config.yaml` or retry by pushing a new commit.                                                                     |
+| Image refuses to start, citing a version mismatch                             | The pinned container image tag and the CI template version have drifted apart. Run `docwelder upgrade` to realign them.                                                                                                                                          |
 
 ## More documentation
 
